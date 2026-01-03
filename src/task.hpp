@@ -1,15 +1,39 @@
+#pragma once
+
 #include <iostream>
 #include <chrono>
 #include <algorithm>
 
+class TaskCollection;
+
+// class Task
+// {
+// public:
+// 	virtual int split(Task **vector, int max) = 0;
+// 	virtual void merge(Task **vector, int max) = 0;
+// 	virtual void solve() = 0;
+// 	virtual void write(std::ostream &os) const = 0;
+// 	virtual ~Task() = default;
+// };
+
 class Task
 {
 public:
-	virtual int split(Task **vector, int max) = 0;
-	virtual void merge(Task **vector, int max) = 0;
+	virtual int split(TaskCollection *collection) = 0;
+	virtual void merge(TaskCollection *collection) = 0;
 	virtual void solve() = 0;
 	virtual void write(std::ostream &os) const = 0;
 	virtual ~Task() = default;
+};
+
+class TaskCollection
+{
+public:
+	virtual int size() const = 0;
+	virtual Task *operator[](int i) = 0;
+	virtual void push(Task *t) = 0;
+	virtual Task *pop() = 0;
+	virtual void clear() = 0;
 };
 
 class TaskRunner
@@ -43,38 +67,38 @@ public:
 	}
 };
 
-class PartitionedTaskRunner : public TaskRunner
-{
-private:
-	int _max;
-	void recurse(Task *t)
-	{
-		Task *partitions[_max];
-		for (int i = 0; i < _max; i++)
-			partitions[i] = 0;
-		int npart = t->split(partitions, _max);
-		if (npart)
-		{
-			for (int i = 0; i < npart; i++)
-				recurse(partitions[i]);
-			t->merge(partitions, npart);
-		}
-		else
-			t->solve();
-	}
+// class PartitionedTaskRunner : public TaskRunner
+// {
+// private:
+// 	int _max;
+// 	void recurse(Task *t)
+// 	{
+// 		Task *partitions[_max];
+// 		for (int i = 0; i < _max; i++)
+// 			partitions[i] = 0;
+// 		int npart = t->split(partitions, _max);
+// 		if (npart)
+// 		{
+// 			for (int i = 0; i < npart; i++)
+// 				recurse(partitions[i]);
+// 			t->merge(partitions, npart);
+// 		}
+// 		else
+// 			t->solve();
+// 	}
 
-	PartitionedTaskRunner() {} // cannot use default constructor
+// 	PartitionedTaskRunner() {} // cannot use default constructor
 
-public:
-	PartitionedTaskRunner(int max) : _max(max) {}
+// public:
+// 	PartitionedTaskRunner(int max) : _max(max) {}
 
-	virtual void run(Task *t) override
-	{
-		TaskRunner::startTimer();
-		recurse(t);
-		TaskRunner::stopTimer();
-	}
-};
+// 	virtual void run(Task *t) override
+// 	{
+// 		TaskRunner::startTimer();
+// 		recurse(t);
+// 		TaskRunner::stopTimer();
+// 	}
+// };
 
 std::ostream &operator<<(std::ostream &os, const Task &t)
 {
