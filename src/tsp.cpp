@@ -44,10 +44,11 @@ int main(int argc, char **argv)
 
 	TSPPath::setup(&graph);
 
-	TSPTask tsp_direct;
-	DirectTaskRunner direct_runner;
-	direct_runner.run(&tsp_direct);
-	std::cout << "direct solver: " << tsp_direct.result() << " time: " << direct_runner.duration() << std::endl;
+	// Sequential TSP
+	// TSPTask tsp_direct;
+	// DirectTaskRunner direct_runner;
+	// direct_runner.run(&tsp_direct);
+	// std::cout << "direct solver: " << tsp_direct.result() << " time: " << direct_runner.duration() << std::endl;
 
 	// WorkStealing
 	TSPTask tsp_ws;
