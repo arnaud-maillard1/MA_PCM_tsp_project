@@ -289,7 +289,7 @@ private:
 
         while (true)
         {
-            // Try taking a task in his own queue
+            // Try taking a task in his own queue and solve it
             if (_deques[id]->popBottom(task))
             {
                 if (task)
@@ -316,7 +316,7 @@ private:
                 if (_deques[victim]->steal(task))
                 {
                     stolen = true;
-                    break;
+                    break; // Break just this for loop
                 }
             }
 
